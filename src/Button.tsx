@@ -1,10 +1,11 @@
 type ButtonProps = {
     name: string;
+    callback: (what: string) => void;
 };
 
 const Button = ({ name }: ButtonProps) => {
     const startBtn = () => {
-        
+        // callback('start')
     }
     const stopBtn = () => {
 

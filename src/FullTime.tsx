@@ -1,30 +1,17 @@
-import { useEffect, useState } from 'react';
+type FullTimeProps = {
+    time: number;
+};
 
-const FullTime = () => {
-    const [counter, setCounter] = useState(0);
+const FullTime = ({ time }: FullTimeProps) => {
+    const formatTime = () => {
+        const min = ('0' + (Math.floor(time / 600) % 60)).slice(-2);
+        const sec = ('0' + (Math.floor(time / 10) % 60)).slice(-2);
+        const ms = ('0' + Math.floor(time) * 10).slice(-2);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCounter((prevCounter) => prevCounter + 1);
-        }, 100);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
-
-    const fullTime = () => {
-        const minutes = Math.floor(counter / 10 / 60);
-        const seconds = Math.floor((counter / 10) % 60);
-        const miliseconds = ((counter * 100) / 10) % 100;
-        const time = `${minutes < 10 ? '0' + minutes : minutes}:${
-            seconds < 10 ? '0' + seconds : seconds
-        }:${miliseconds < 10 ? '0' + miliseconds : miliseconds}`;
-
-        return time;
+        return `${min}:${sec}:${ms}`;
     };
 
-    return <div>{fullTime()}</div>;
+    return <div className='full-time timer'>{formatTime()}</div>;
 };
 
 export { FullTime };

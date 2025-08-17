@@ -1,0 +1,23 @@
+type NewRecord = {
+    lap: number;
+    time: string;
+};
+
+type NewRecordProps = {
+    records: NewRecord[];
+};
+
+const TableRecords = ({ records }: NewRecordProps) => {
+    return (
+        <tbody>
+            {records.map((rec) => (
+                <tr key={rec.lap}>
+                    <td>{rec.lap}</td>
+                    <td>{rec.time}</td>
+                </tr>
+            ))}
+        </tbody>
+    );
+};
+
+export { TableRecords };

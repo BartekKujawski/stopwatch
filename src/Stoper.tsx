@@ -3,6 +3,7 @@ import { Button } from './Button';
 import { FullTime } from './FullTime';
 import { LapTime } from './LapTime';
 import { Table } from './Table';
+import { Summary } from './Summary';
 
 type NewRecord = {
     lap: number;
@@ -15,6 +16,7 @@ const Stoper = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [whichLap, setWhichLap] = useState(1);
     const [records, setRecords] = useState<NewRecord[]>([]);
+    const [everyTime, setEveryTime] = useState<number[]>([]);
 
     useEffect(() => {
         if (isRunning) {
@@ -57,15 +59,38 @@ const Stoper = () => {
             ...prevRecords,
             { lap: whichLap, time: formatTime(lapTime) },
         ]);
+        setEveryTime((prevTime) => [...prevTime, lapTime]);
         setWhichLap((prevLap) => prevLap + 1);
         setLapTime(0);
     };
 
+    const checkIsRunning = () => {
+        if (isRunning || !fullTime) {
+            return (
+                <>
+                    {' '}
+                    <FullTime time={formatTime(fullTime)} />
+                    <LapTime time={formatTime(lapTime)} />
+                    <Table records={records} />
+                </>
+            );
+        }
+        let sum = 0;
+        everyTime.forEach((time) => (sum += time));
+        return (
+            <Summary
+                fullTime={formatTime(fullTime)}
+                avgTime={formatTime(sum / everyTime.length)}
+                bestTime={formatTime(Math.min(...everyTime))}
+                worstTime={formatTime(Math.max(...everyTime))}
+                laps={whichLap}
+            />
+        );
+    };
+
     return (
         <>
-            <FullTime time={formatTime(fullTime)} />
-            <LapTime time={formatTime(lapTime)} />
-            <Table records={records} />
+            <>{checkIsRunning()}</>
             <Button label='start' callback={handleStart} />
             <Button label='stop' callback={handleStop} />
             <Button label='reset' callback={handleReset} />

@@ -14,7 +14,7 @@ const Stoper = () => {
     const [fullTime, setFullTime] = useState(0);
     const [lapTime, setLapTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-    const [whichLap, setWhichLap] = useState(1);
+    const [whichLap, setWhichLap] = useState(0);
     const [records, setRecords] = useState<NewRecord[]>([]);
     const [everyTime, setEveryTime] = useState<number[]>([]);
 
@@ -41,9 +41,15 @@ const Stoper = () => {
 
     const handleStart = () => {
         setIsRunning(true);
+        setWhichLap((prevLap) => prevLap + 1);
     };
 
     const handleStop = () => {
+        setRecords((prevRecords) => [
+            ...prevRecords,
+            { lap: whichLap, time: formatTime(lapTime) },
+        ]);
+        setEveryTime((prevTime) => [...prevTime, lapTime]);
         setIsRunning(false);
     };
 
@@ -71,7 +77,7 @@ const Stoper = () => {
                     {' '}
                     <FullTime time={formatTime(fullTime)} />
                     <LapTime time={formatTime(lapTime)} />
-                    <Table records={records} />
+                    {/* <Table records={records} /> */}
                 </>
             );
         }
@@ -97,6 +103,7 @@ const Stoper = () => {
                 <Button label='reset' callback={handleReset} />
                 <Button label='lap' callback={handleLap} />
             </section>
+            {isRunning || !fullTime ? <Table records={records} /> : <></>}
         </>
     );
 };

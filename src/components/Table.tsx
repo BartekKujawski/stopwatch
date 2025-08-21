@@ -11,7 +11,7 @@ type NewRecordProps = {
 
 const Table = ({ records }: NewRecordProps) => {
     return (
-        <table>
+        <table className='records-table'>
             <thead>
                 <tr>
                     <th>Numer okrążenia</th>

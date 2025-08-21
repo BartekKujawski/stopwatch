@@ -90,11 +90,13 @@ const Stoper = () => {
 
     return (
         <>
-            <>{checkIsRunning()}</>
-            <Button label='start' callback={handleStart} />
-            <Button label='stop' callback={handleStop} />
-            <Button label='reset' callback={handleReset} />
-            <Button label='lap' callback={handleLap} />
+            <main className='main'>{checkIsRunning()}</main>
+            <section className='buttons'>
+                <Button label='start' callback={handleStart} />
+                <Button label='stop' callback={handleStop} />
+                <Button label='reset' callback={handleReset} />
+                <Button label='lap' callback={handleLap} />
+            </section>
         </>
     );
 };
